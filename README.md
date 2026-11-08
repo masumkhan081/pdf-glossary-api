@@ -33,33 +33,24 @@ Edit `.env` and set:
 
 | Variable | Purpose | Example |
 |---|---|---|
-| `DJANGO_SECRET_KEY` | Cryptographic signing key | Generate with the command below |
+| `DJANGO_SECRET_KEY` | Cryptographic signing key | Pre-generated in `.env` |
 | `DJANGO_DEBUG` | Enable debug mode | `True` for local dev |
 | `DJANGO_ALLOWED_HOSTS` | Comma-separated hostnames | `localhost,127.0.0.1` |
 | `DATABASE_URL` | PostgreSQL connection string | See below |
 
-Generate a secret key:
-
-```powershell
-python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
-```
-
 #### Setting DATABASE_URL
 
-Use a standard PostgreSQL connection URL:
+Set your PostgreSQL connection string in `.env`:
 
 ```
+# Supabase (Session Pooler)
+DATABASE_URL=postgresql://postgres.vhxlznvlleaejuzeuzmv:[YOUR-PASSWORD]@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres
+
 # Local PostgreSQL
-postgres://myuser:mypassword@localhost:5432/pdf_glossary
-
-# Neon (cloud)
-postgres://user:password@ep-cool-night-123456.us-east-2.aws.neon.tech/pdf_glossary?sslmode=require
-
-# Supabase (cloud)
-postgres://postgres.xxxxxxxxxxxx:password@aws-0-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require
+DATABASE_URL=postgresql://user:password@localhost:5432/pdf_glossary
 ```
 
-> **Note:** Connection URL options like `sslmode=require` are preserved automatically.
+> **Note:** Connection URL options such as `sslmode=require` are supported and parsed automatically.
 
 ### 4. Run migrations
 
@@ -67,7 +58,7 @@ postgres://postgres.xxxxxxxxxxxx:password@aws-0-us-east-1.pooler.supabase.com:65
 python manage.py migrate
 ```
 
-> Migrations require a working `DATABASE_URL`. If you see a connection error, confirm your PostgreSQL server is running and the URL is correct.
+> Migrations require a working `DATABASE_URL`. Make sure you replace `[YOUR-PASSWORD]` with your actual password.
 
 ### 5. Start the development server
 
@@ -118,12 +109,8 @@ pdf-glossary/
 │   ├── models.py
 │   ├── admin.py
 │   └── tests.py
-├── docs/
-│   └── todo.md
 ├── .env.example             # Template for environment variables
 ├── .gitignore
 ├── manage.py
-├── requirements.txt
-├── sample.txt
-└── config.json
+└── requirements.txt
 ```
